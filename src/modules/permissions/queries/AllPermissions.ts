@@ -1,4 +1,4 @@
-import { queryField } from 'nexus'
+import { extendType, intArg, queryField } from 'nexus'
 
 export const allPermissions = queryField((t) => {
   t.nonNull.list.nonNull.field('allPermissions', {

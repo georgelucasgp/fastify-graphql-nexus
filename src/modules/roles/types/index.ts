@@ -1,7 +1,7 @@
 import { inputObjectType, objectType } from 'nexus'
 import { Roles } from '../../../generated/nexus-prisma'
 
-const Role = objectType({
+export const Role = objectType({
   name: Roles.$name,
   definition(t) {
     t.field(Roles.id)
@@ -11,11 +11,23 @@ const Role = objectType({
   },
 })
 
-const RoleCreateInput = inputObjectType({
+export const RoleCreateInput = inputObjectType({
   name: 'RoleCreateInput',
   definition(t) {
     t.field(Roles.name)
   },
 })
 
-export { Role, RoleCreateInput }
+export const RoleUpdateInput = inputObjectType({
+  name: 'RoleUpdateInput',
+  definition(t) {
+    t.field(Roles.name)
+  },
+})
+
+export const RoleWhereUniqueInput = inputObjectType({
+  name: 'RoleWhereUniqueInput',
+  definition(t) {
+    t.field(Roles.id)
+  },
+})

@@ -9,7 +9,7 @@ import { RolesMutation } from './modules/roles/mutations'
 import path from 'path'
 
 export const DateTime = asNexusMethod(DateTimeResolver, 'date')
-
+//dúvida se é no singular ou plural o nome dos types
 export const schema = makeSchema({
   types: [
     RolesMutation,

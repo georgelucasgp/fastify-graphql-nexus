@@ -1,16 +1,16 @@
 import { arg, mutationField, nonNull } from 'nexus'
 
-export const createRole = mutationField('createRole', {
-  type: 'Roles',
+export const createOnePermission = mutationField('createOnePermission', {
+  type: 'Permissions',
   args: {
     data: nonNull(
       arg({
-        type: 'RoleCreateInput',
+        type: 'PermissionCreateInput',
       }),
     ),
   },
   resolve: (_, args, context) => {
-    return context.prisma.roles.create({
+    return context.prisma.permissions.create({
       data: {
         name: args.data.name,
       },

@@ -1,5 +1,9 @@
-import { createPermission } from './CreatePermission'
+import { updateOnePermission } from './UpdateOnePermission'
+import { createOnePermission } from './CreateOnePermission'
+import { deleteOnePermission } from './DeleteOnePermission'
 
 export const PermissionsMutation = {
-  createPermission,
+  createOnePermission,
+  updateOnePermission,
+  deleteOnePermission,
 }

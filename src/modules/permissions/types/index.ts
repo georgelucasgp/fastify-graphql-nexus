@@ -14,7 +14,21 @@ const Permission = objectType({
 const PermissionCreateInput = inputObjectType({
   name: 'PermissionCreateInput',
   definition(t) {
-    t.nonNull.string('name')
+    t.field(Permissions.name)
+  },
+})
+
+export const PermissionUpdateInput = inputObjectType({
+  name: 'PermissionUpdateInput',
+  definition(t) {
+    t.field(Permissions.name)
+  },
+})
+
+export const PermissionWhereUniqueInput = inputObjectType({
+  name: 'PermissionWhereUniqueInput',
+  definition(t) {
+    t.field(Permissions.id)
   },
 })
 
