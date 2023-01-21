@@ -1,0 +1,137 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator nexusPrisma {
+  provider = "nexus-prisma"
+}
+
+model Roles {
+  id                  String                @id @default(cuid())
+  name                String
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  RolesHasPermissions RolesHasPermissions[]
+  UsersHasRoles       UsersHasRoles[]
+  PlansHasRoles       PlansHasRoles[]
+
+  @@map("roles")
+}
+
+model RolesHasPermissions {
+  id            String      @id @default(cuid())
+  roles         Roles       @relation(fields: [rolesId], references: [id])
+  rolesId       String
+  permissions   Permissions @relation(fields: [permissionsId], references: [id])
+  permissionsId String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@map("roles_has_permissions")
+}
+
+model Permissions {
+  id                  String                @id @default(cuid())
+  name                String
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  RolesHasPermissions RolesHasPermissions[]
+
+  @@map("permissions")
+}
+
+model Users {
+  id            String          @id @default(cuid())
+  name          String
+  function      String
+  cpf           String          @unique
+  email         String          @unique
+  passwordHash  String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  UsersHasRoles UsersHasRoles[]
+
+  @@map("users")
+}
+
+model UsersHasRoles {
+  id        String   @id @default(cuid())
+  Users     Users    @relation(fields: [usersId], references: [id])
+  usersId   String
+  roles     Roles    @relation(fields: [rolesId], references: [id])
+  rolesId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users_has_roles")
+}
+
+model Plans {
+  id            String          @id @default(cuid())
+  rolesId       String
+  name          String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  PlansHasRoles PlansHasRoles[]
+
+  @@map("plans")
+}
+
+model PlansHasRoles {
+  id        String   @id @default(cuid())
+  plans     Plans    @relation(fields: [plansId], references: [id])
+  plansId   String
+  roles     Roles    @relation(fields: [rolesId], references: [id])
+  rolesId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("plans_has_roles")
+}
+
+model Licenses {
+  id         String   @id @default(cuid())
+  plansId    String
+  expiration DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("licenses")
+}
+
+model Domains {
+  id              String   @id @default(cuid())
+  name            String
+  slug            String
+  subdomain       String
+  isValid         Boolean
+  organizationsId String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  organizations Organizations @relation(fields: [organizationsId], references: [id])
+
+  @@map("domains")
+}
+
+model Organizations {
+  id                      String    @id @default(cuid())
+  natural_or_legal_person String
+  owner                   String
+  city                    String
+  state                   String
+  email                   String
+  cpf_or_cnpj             String
+  phone                   String
+  data_of_registration    String
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+  Domains                 Domains[]
+
+  @@map("organizations")
+}

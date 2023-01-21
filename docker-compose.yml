@@ -1,0 +1,75 @@
+version: '3.8'
+services:
+  ###############################################################
+  # Backend
+  ###############################################################
+  pcontrol-back:
+    container_name: pcontrol-back
+    image: node:lts
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    command: bash -c "npm install -g pnpm && pnpm install && npx prisma generate && npx prisma migrate dev && pnpm dev"
+    ports:
+      - 4000:4000
+    depends_on:
+      - pcontrol-master
+    env_file:
+      - .env
+    networks:
+      pcontrol_net:
+  ###############################################################
+  # Master Database
+  ###############################################################
+  pcontrol-master:
+    container_name: pcontrol-master
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: pcontrol-master
+      POSTGRES_USER: pcontrol-master
+      POSTGRES_DB: pcontrol-master
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-pcontrol-master:/var/lib/postgresql/data
+    networks:
+      pcontrol_net:
+    restart: unless-stopped
+  ###############################################################
+  # Secondary Database
+  ###############################################################
+  tenant1:
+    container_name: tenant1
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: tenant1
+      POSTGRES_USER: tenant1
+      POSTGRES_DB: tenant1
+    ports:
+      - 5433:5432
+    volumes:
+      - postgres-tenant1:/var/lib/postgresql/data
+    networks:
+      pcontrol_net:
+    restart: unless-stopped
+  ###############################################################
+  # Redis
+  ###############################################################
+  pcontrol-redis:
+    container_name: pcontrol-redis
+    image: redis:alpine
+    ports:
+      - 6379:6379
+    volumes:
+      - redis:/data
+    networks:
+      pcontrol_net:
+    restart: unless-stopped
+volumes:
+  postgres-pcontrol-master:
+  postgres-tenant1:
+  redis:
+networks:
+  pcontrol_net:
+    driver: bridge
+    name: pcontrol_net
