@@ -3,6 +3,7 @@ import { Roles } from '../../../generated/nexus-prisma'
 
 export const Role = objectType({
   name: Roles.$name,
+  description: 'Type representing a role',
   definition(t) {
     t.field(Roles.id)
     t.field(Roles.name)

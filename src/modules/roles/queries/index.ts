@@ -1,5 +1,7 @@
-import { allRoles } from './AllRoles'
+import { findOneRole } from './FindOneRoles'
+import { findAllRoles } from './FindAllRoles'
 
 export const RolesQuery = {
-  allRoles,
+  findAllRoles,
+  findOneRole,
 }

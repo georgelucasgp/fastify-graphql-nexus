@@ -1,5 +1,7 @@
-import { allPermissions } from './AllPermissions'
+import { findOnePermission } from './FindOnePermission'
+import { findAllPermissions } from './FindAllPermissions'
 
 export const PermissionsQuery = {
-  allPermissions,
+  findAllPermissions,
+  findOnePermission,
 }
