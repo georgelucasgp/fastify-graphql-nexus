@@ -3,7 +3,7 @@ import { Roles } from '../../../generated/nexus-prisma'
 
 export const Role = objectType({
   name: Roles.$name,
-  description: 'Type representing a role',
+  description: 'Type representing a role teste',
   definition(t) {
     t.field(Roles.id)
     t.field(Roles.name)
@@ -30,5 +30,12 @@ export const RoleWhereUniqueInput = inputObjectType({
   name: 'RoleWhereUniqueInput',
   definition(t) {
     t.field(Roles.id)
+  },
+})
+
+export const RoleWhereUniqueInputTeste = inputObjectType({
+  name: 'RoleWhereUniqueInputTeste',
+  definition(t) {
+    t.field(Roles.name)
   },
 })

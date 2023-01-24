@@ -1,4 +1,4 @@
-import { findOneRole } from './FindOneRoles'
+import { findOneRole } from './FindOneRole'
 import { findAllRoles } from './FindAllRoles'
 
 export const RolesQuery = {
