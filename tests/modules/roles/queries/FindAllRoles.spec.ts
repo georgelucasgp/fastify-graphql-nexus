@@ -2,34 +2,36 @@
 import request from 'supertest'
 import { app } from '../../../../src/app'
 import { gql } from 'mercurius-codegen'
-describe(`Integration`, () => {
-  beforeEach(async () => {
-    await app.ready()
-  })
 
-  describe(`GraphQL`, () => {
-    it(`should return a list of roles`, async () => {
-      const query = gql`
-        query findAllRoles {
-          findAllRoles {
-            id
-            name
-            createdAt
-            updatedAt
-          }
+jest.mock('../../../../src/redis', () => ({
+  redis: {
+    get: jest.fn().mockResolvedValue(null),
+    set: jest.fn().mockResolvedValue(null),
+  },
+}))
+
+beforeAll(async () => {
+  await app.ready()
+})
+
+describe(`GraphQL`, () => {
+  it(`should return a list of roles`, async () => {
+    const query = gql`
+      query findAllRoles {
+        findAllRoles {
+          id
+          name
+          createdAt
+          updatedAt
         }
-      `
-      // 4. Send the query to our server
-      const response = await request(app.server)
-        .post('/graphql')
-        .send({ query })
+      }
+    `
+    const response = await request(app.server)
+      .post('/graphql')
+      .send({ query })
+      .expect(200)
 
-      console.log(response.body)
-
-      // 5. Assert that the response is what we expect
-    })
+    expect(response.body.data.findAllRoles).toHaveLength(5)
+    expect(response.body.data.findAllRoles[0]).toHaveProperty('name')
   })
-  /**
-   * 3. GraphQL Query: add(...)
-   */
 })

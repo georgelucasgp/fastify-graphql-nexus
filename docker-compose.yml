@@ -9,9 +9,11 @@ services:
     working_dir: /usr/src/app
     volumes:
       - .:/usr/src/app
-    command: bash -c "npm install -g pnpm && pnpm install && pnpm dev"
+    command: bash -c "npm install -g pnpm && pnpm install && pnpm migrate:dev && pnpm dev"
     ports:
       - 4000:4000
+    extra_hosts:
+      - localhost:172.17.0.1
     depends_on:
       - pcontrol-master
     env_file:
