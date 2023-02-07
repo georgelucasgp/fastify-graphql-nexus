@@ -1,35 +1,38 @@
 import { inputObjectType, objectType } from 'nexus'
 import { Permissions } from '../../../generated/nexus-prisma'
 
-const Permission = objectType({
+export const permission = objectType({
   name: Permissions.$name,
+  description: Permissions.$description,
   definition(t) {
     t.field(Permissions.id)
     t.field(Permissions.name)
+    t.field(Permissions.description)
     t.field(Permissions.createdAt)
     t.field(Permissions.updatedAt)
   },
 })
 
-const PermissionCreateInput = inputObjectType({
-  name: 'PermissionCreateInput',
+export const permissionCreateInput = inputObjectType({
+  name: `${Permissions.$name}CreateInput`,
   definition(t) {
     t.field(Permissions.name)
+    t.field(Permissions.description)
   },
 })
 
-export const PermissionUpdateInput = inputObjectType({
-  name: 'PermissionUpdateInput',
+export const permissionUpdateInput = inputObjectType({
+  name: `${Permissions.$name}UpdateInput`,
   definition(t) {
     t.field(Permissions.name)
+    t.field(Permissions.description)
   },
 })
 
-export const PermissionWhereUniqueInput = inputObjectType({
-  name: 'PermissionWhereUniqueInput',
+export const permissionWhereUniqueInput = inputObjectType({
+  name: `${Permissions.$name}WhereUniqueInput`,
+
   definition(t) {
     t.field(Permissions.id)
   },
 })
-
-export { Permission, PermissionCreateInput }

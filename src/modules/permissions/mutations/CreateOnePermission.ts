@@ -1,19 +1,28 @@
 import { arg, mutationField, nonNull } from 'nexus'
+import { Permissions } from '../../../generated/nexus-prisma'
 
 export const createOnePermission = mutationField('createOnePermission', {
-  type: 'Permissions',
+  type: Permissions.$name,
   args: {
     data: nonNull(
       arg({
-        type: 'PermissionCreateInput',
+        type: `${Permissions.$name}CreateInput`,
       }),
     ),
   },
-  resolve: (_, args, context) => {
+  resolve: async (_, args, context) => {
+    const permissionAlreadyExistName =
+      await context.prisma.permissions.findUnique({
+        where: {
+          id: args.data.name,
+        },
+      })
+    if (permissionAlreadyExistName)
+      throw new Error(
+        `Permission with name ${permissionAlreadyExistName.name} already exist`,
+      )
     return context.prisma.permissions.create({
-      data: {
-        name: args.data.name,
-      },
+      data: args.data,
     })
   },
 })

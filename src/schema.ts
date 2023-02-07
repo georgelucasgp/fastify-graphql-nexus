@@ -1,3 +1,4 @@
+import { AuthMutation } from './modules/auth/mutations/index'
 import { PermissionsQuery } from './modules/permissions/queries'
 import { PermissionsMutation } from './modules/permissions/mutations'
 import { makeSchema, connectionPlugin, asNexusMethod } from 'nexus'
@@ -7,6 +8,10 @@ import * as RoleTypes from './modules/roles/types'
 import * as PermissionTypes from './modules/permissions/types'
 import { RolesMutation } from './modules/roles/mutations'
 import path from 'path'
+import { UsersMutation } from './modules/users/mutations'
+import { UsersQuery } from './modules/users/queries'
+import * as UserTypes from './modules/users/types'
+import * as AuthTypes from './modules/auth/types'
 
 export const DateTime = asNexusMethod(DateTimeResolver, 'date')
 //dúvida se é no singular ou plural o nome dos types
@@ -18,6 +23,11 @@ export const schema = makeSchema({
     PermissionsMutation,
     PermissionsQuery,
     PermissionTypes,
+    UsersMutation,
+    UsersQuery,
+    UserTypes,
+    AuthMutation,
+    AuthTypes,
     DateTime,
   ],
   outputs: {

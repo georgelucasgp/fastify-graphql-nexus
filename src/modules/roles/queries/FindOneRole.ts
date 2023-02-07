@@ -1,11 +1,12 @@
 import { arg, nonNull, queryField } from 'nexus'
+import { Roles } from '../../../generated/nexus-prisma'
 
 export const findOneRole = queryField('findOneRole', {
   type: 'Roles',
   args: {
     where: nonNull(
       arg({
-        type: 'RoleWhereUniqueInput',
+        type: `${Roles.$name}WhereUniqueInput`,
       }),
     ),
   },

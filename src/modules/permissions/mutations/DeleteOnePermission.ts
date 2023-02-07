@@ -1,11 +1,13 @@
 import { arg, mutationField, nonNull } from 'nexus'
+import { Permissions } from '../../../generated/nexus-prisma'
 
 export const deleteOnePermission = mutationField('deleteOnePermission', {
-  type: 'Permissions',
+  type: Permissions.$name,
+
   args: {
     where: nonNull(
       arg({
-        type: 'PermissionWhereUniqueInput',
+        type: `${Permissions.$name}WhereUniqueInput`,
       }),
     ),
   },

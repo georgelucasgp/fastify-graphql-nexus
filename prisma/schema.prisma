@@ -12,9 +12,11 @@ generator nexusPrisma {
   provider = "nexus-prisma"
 }
 
+/// This is Roles Table
 model Roles {
   id                  String                @id @default(cuid())
-  name                String
+  name                String                @unique
+  description         String?
   createdAt           DateTime              @default(now())
   updatedAt           DateTime              @updatedAt
   RolesHasPermissions RolesHasPermissions[]
@@ -38,7 +40,8 @@ model RolesHasPermissions {
 
 model Permissions {
   id                  String                @id @default(cuid())
-  name                String
+  name                String                @unique
+  description         String?
   createdAt           DateTime              @default(now())
   updatedAt           DateTime              @updatedAt
   RolesHasPermissions RolesHasPermissions[]
@@ -48,11 +51,11 @@ model Permissions {
 
 model Users {
   id            String          @id @default(cuid())
-  name          String
+  name          String          @unique
   function      String
   cpf           String          @unique
   email         String          @unique
-  passwordHash  String
+  password      String
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   UsersHasRoles UsersHasRoles[]
@@ -74,11 +77,11 @@ model UsersHasRoles {
 
 model Plans {
   id            String          @id @default(cuid())
-  rolesId       String
-  name          String
+  name          String          @unique
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   PlansHasRoles PlansHasRoles[]
+  Licenses      Licenses[]
 
   @@map("plans")
 }
@@ -97,39 +100,40 @@ model PlansHasRoles {
 
 model Licenses {
   id         String   @id @default(cuid())
-  plansId    String
   expiration DateTime
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  plans      Plans    @relation(fields: [plansId], references: [id])
+  plansId    String
 
   @@map("licenses")
 }
 
 model Domains {
-  id              String   @id @default(cuid())
-  name            String
-  slug            String
-  subdomain       String
-  isValid         Boolean
-  organizationsId String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String
+  subdomain String
+  isValid   Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  organizations Organizations @relation(fields: [organizationsId], references: [id])
+  organizations   Organizations @relation(fields: [organizationsId], references: [id])
+  organizationsId String
 
   @@map("domains")
 }
 
 model Organizations {
   id                      String    @id @default(cuid())
-  natural_or_legal_person String
+  natural_or_legal_person String    @unique
   owner                   String
   city                    String
   state                   String
-  email                   String
-  cpf_or_cnpj             String
+  email                   String    @unique
+  cpf_or_cnpj             String    @unique
   phone                   String
-  data_of_registration    String
+  data_of_registration    DateTime
   createdAt               DateTime  @default(now())
   updatedAt               DateTime  @updatedAt
   Domains                 Domains[]

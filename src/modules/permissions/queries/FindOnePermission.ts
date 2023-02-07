@@ -1,11 +1,12 @@
 import { arg, nonNull, queryField } from 'nexus'
+import { Permissions } from '../../../generated/nexus-prisma'
 
 export const findOnePermission = queryField('findOnePermission', {
-  type: 'Permissions',
+  type: Permissions.$name,
   args: {
     where: nonNull(
       arg({
-        type: 'PermissionWhereUniqueInput',
+        type: `${Permissions.$name}WhereUniqueInput`,
       }),
     ),
   },

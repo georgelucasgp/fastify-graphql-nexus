@@ -1,15 +1,25 @@
 import { arg, mutationField, nonNull } from 'nexus'
+import { Roles } from '../../../generated/nexus-prisma'
 
 export const deleteOneRole = mutationField('deleteOneRole', {
-  type: 'Roles',
+  type: Roles.$name,
   args: {
     where: nonNull(
       arg({
-        type: 'RoleWhereUniqueInput',
+        type: `${Roles.$name}WhereUniqueInput`,
       }),
     ),
   },
-  resolve: (_, args, context) => {
+  resolve: async (_, args, context) => {
+    const roleAlreadyExist = await context.prisma.roles.findUnique({
+      where: {
+        id: args.where.id,
+      },
+    })
+
+    if (!roleAlreadyExist)
+      throw new Error(`Role with id ${args.where.id} not exist`)
+
     return context.prisma.roles.delete({
       where: {
         id: args.where.id,

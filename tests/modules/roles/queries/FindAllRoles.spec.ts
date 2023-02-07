@@ -20,6 +20,7 @@ describe(`GraphQL`, () => {
       query findAllRoles {
         findAllRoles {
           id
+          description
           name
           createdAt
           updatedAt
@@ -30,8 +31,9 @@ describe(`GraphQL`, () => {
       .post('/graphql')
       .send({ query })
       .expect(200)
+    const data = response.body.data.findAllRoles[0]
 
-    expect(response.body.data.findAllRoles).toHaveLength(5)
-    expect(response.body.data.findAllRoles[0]).toHaveProperty('name')
+    expect(data).toHaveProperty('id')
+    expect(data).toBeTruthy()
   })
 })

@@ -1,11 +1,15 @@
 import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient()
-
 export interface Context {
   prisma: PrismaClient
+  request: {
+    headers: {
+      authorization: string
+    }
+  }
 }
 
-export const context: Context = {
-  prisma: prisma,
-}
+export const context = (request: any): Context => ({
+  prisma: new PrismaClient(),
+  request,
+})

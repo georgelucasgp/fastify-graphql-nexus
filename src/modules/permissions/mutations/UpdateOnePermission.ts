@@ -1,16 +1,17 @@
 import { arg, mutationField, nonNull } from 'nexus'
+import { Permissions } from '../../../generated/nexus-prisma'
 
 export const updateOnePermission = mutationField('updateOnePermission', {
-  type: 'Permissions',
+  type: Permissions.$name,
   args: {
     data: nonNull(
       arg({
-        type: 'PermissionUpdateInput',
+        type: `${Permissions.$name}UpdateInput`,
       }),
     ),
     where: nonNull(
       arg({
-        type: 'PermissionWhereUniqueInput',
+        type: `${Permissions.$name}WhereUniqueInput`,
       }),
     ),
   },
@@ -19,9 +20,7 @@ export const updateOnePermission = mutationField('updateOnePermission', {
       where: {
         id: args.where.id,
       },
-      data: {
-        name: args.data.name,
-      },
+      data: args.data,
     })
   },
 })
